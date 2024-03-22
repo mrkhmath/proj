@@ -52,8 +52,9 @@ const wardCollection = 'wards';
  */
 
 /**should be accessed only by admin role */
-wardapp.post('/v1/inpatient/', verifyToken, verifyRoles(['admin']), async (req, res) => {
-    /**
+// wardapp.post('/v1/inpatient/', verifyToken, verifyRoles(['admin']), async (req, res) => {
+wardapp.post('/v1/inpatient/', async (req, res) => {
+/**
      * link body sample:
      * {
             "pid":77778888,
@@ -218,7 +219,8 @@ wardapp.get('/v1/discharge/:pid', verifyToken, verifyRoles(['admin']), async (re
     }
 
 });
-wardapp.post('/v1/discharge/:pid', verifyToken, verifyRoles(['admin']), async (req, res) => {
+// wardapp.post('/v1/discharge/:pid', verifyToken, verifyRoles(['admin']), async (req, res) => {
+wardapp.post('/v1/discharge/:pid', async (req, res) => {
     const db = getDb();
     const { pid } = req.params
     const pnumber = +pid
