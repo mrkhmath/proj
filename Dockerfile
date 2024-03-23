@@ -18,6 +18,6 @@ RUN npm install
 # Copy the rest of the application files
 
 # Expose port, wil lthis override the port specificed in the code?
-EXPOSE 3000 
+EXPOSE 9191 
 # Specify the entry point
 CMD ["node", "wardmodule_new.js"] 

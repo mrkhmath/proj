@@ -16,4 +16,4 @@ spec:
       - name: ward-module
         image: ward-module:v1.0.${BUILD_NUMBER}  # Replace ${BUILD_NUMBER} with your actual build number
         ports:
-        - containerPort: 3000
+        - containerPort: 9191

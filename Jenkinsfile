@@ -14,7 +14,7 @@ pipeline {
         MINIKUBE_PATH = "/opt/homebrew/bin"
         DOCKER_PATH = "/usr/local/bin"
         // Path to Postman collection file in your Git repository
-        POSTMAN_COLLECTION = "wardcollection.postman_collection.json"
+        POSTMAN_COLLECTION = "ward_collection.postman_collection.json"
     }
 
     stages {
@@ -74,7 +74,7 @@ pipeline {
                         // Update the deployment to use the new Docker image
                         sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${IMAGE_FULL_NAME}"
                         
-                        // Restart the pods
+                        // Restart the pods 
                         sh "kubectl rollout restart deployment/${DEPLOYMENT_NAME}"
                     } else {
                         // Apply the deployment and service YAML files

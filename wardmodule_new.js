@@ -82,7 +82,7 @@ wardapp.post('/v1/inpatient/', async (req, res) => {
         }
         const inpatient = await db.collection(inpatients).findOne({ pnumber: pnumber });
         if (inpatient != null) {
-            msg += "Patient is already admited";
+            msg += "Patient is already admitted";
             isError = true;
         }
         /**
@@ -175,7 +175,8 @@ wardapp.post('/v1/inpatient/', async (req, res) => {
 /**
  * view all patients that has discharge form ready
  */
-wardapp.get('/v1/discharge/', verifyToken, verifyRoles(['admin']), async (req, res) => {
+// wardapp.get('/v1/discharge/', verifyToken, verifyRoles(['admin']), async (req, res) => {
+wardapp.get('/v1/discharge/', async (req, res) => {
     const db = getDb();
     let isError = false;
     let links = [];
@@ -201,24 +202,7 @@ wardapp.get('/v1/discharge/', verifyToken, verifyRoles(['admin']), async (req, r
     }
 
 });
-wardapp.get('/v1/discharge/:pid', verifyToken, verifyRoles(['admin']), async (req, res) => {
-    const db = getDb();
-    const { pid } = req.params
-    const pnumber = +pid
-    try {
-        const discharge = await db.collection(inpatients).aggregate(
-            [
-                { $match: { pnumber: pnumber } },
-                { $project: { pnumber: 1, discharge_form: 1, "_id": 0 } },
 
-            ]).toArray();
-
-        res.status(200).json(discharge);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-
-});
 // wardapp.post('/v1/discharge/:pid', verifyToken, verifyRoles(['admin']), async (req, res) => {
 wardapp.post('/v1/discharge/:pid', async (req, res) => {
     const db = getDb();
@@ -256,7 +240,7 @@ wardapp.post('/v1/discharge/:pid', async (req, res) => {
             },
         );
         if (update.modifiedCount === 1) {
-            res.status(500).json("Pationet is discharged");
+            res.status(500).json("Patient is discharged");
 
         } else {
             res.status(500).json({ error: 'Failed to discharge patient' });
@@ -276,7 +260,8 @@ wardapp.post('/v1/discharge/:pid', async (req, res) => {
  * type:  bp, cardiac, temperature
  * for test i amnot checking nurse id
 */
-wardapp.get('/v1/inpatient/:pid/', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+// wardapp.get('/v1/inpatient/:pid/', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+wardapp.get('/v1/inpatient/:pid/', async (req, res) => {
     const { pid } = req.params;
     const pnumber = +pid
     const db = getDb();
@@ -302,7 +287,7 @@ wardapp.get('/v1/inpatient/:pid/', verifyToken, verifyRoles(['nurse', 'doctor'])
                 report: "localhost:" + port + "/v1/inpatient/" + pnumber + "/report",
                 medication: "localhost:" + port + "/v1/inpatient/" + pnumber + "/medication",
             };
-            res.json(links);
+            res.send(links);
         }
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -310,7 +295,8 @@ wardapp.get('/v1/inpatient/:pid/', verifyToken, verifyRoles(['nurse', 'doctor'])
 
 });
 
-wardapp.get('/v1/inpatient/:pid/vitalsigns/:type', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+// wardapp.get('/v1/inpatient/:pid/vitalsigns/:type', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+wardapp.get('/v1/inpatient/:pid/vitalsigns/:type', async (req, res) => {
 
     const { pid, type } = req.params;
     const pnumber = +pid
@@ -363,7 +349,8 @@ wardapp.get('/v1/inpatient/:pid/vitalsigns/:type', verifyToken, verifyRoles(['nu
     }
 
 });
-wardapp.get('/v1/inpatient/:pid/report', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+// wardapp.get('/v1/inpatient/:pid/report', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+wardapp.get('/v1/inpatient/:pid/report', async (req, res) => {
 
     const { pid } = req.params;
     const pnumber = +pid
@@ -391,7 +378,8 @@ wardapp.get('/v1/inpatient/:pid/report', verifyToken, verifyRoles(['nurse', 'doc
 
 });
 
-wardapp.get('/v1/inpatient/:pid/medication', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+// wardapp.get('/v1/inpatient/:pid/medication', verifyToken, verifyRoles(['nurse', 'doctor']), async (req, res) => {
+wardapp.get('/v1/inpatient/:pid/medication', async (req, res) => {
 
     const { pid } = req.params;
     const pnumber = +pid
@@ -419,7 +407,8 @@ wardapp.get('/v1/inpatient/:pid/medication', verifyToken, verifyRoles(['nurse', 
 
 });
 
-wardapp.get('/v1/inpatient/:pid/discharge_form', verifyToken, verifyRoles(['doctor']), async (req, res) => {
+// wardapp.get('/v1/inpatient/:pid/discharge_form', verifyToken, verifyRoles(['doctor']), async (req, res) => {
+wardapp.get('/v1/inpatient/:pid/discharge_form', async (req, res) => {
 
     const { pid } = req.params;
     const pnumber = +pid
